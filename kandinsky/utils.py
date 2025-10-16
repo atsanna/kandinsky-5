@@ -31,6 +31,7 @@ def get_T2V_pipeline(
     conf_path: str = None,
     offload: bool = False,
     magcache: bool = False,
+    quantized_qwen: bool = False,
 ) -> Kandinsky5T2VPipeline:
     assert resolution in [512]
 
@@ -93,7 +94,7 @@ def get_T2V_pipeline(
     else:
         conf = OmegaConf.load(conf_path)
 
-    text_embedder = get_text_embedder(conf.model.text_embedder)
+    text_embedder = get_text_embedder(conf.model.text_embedder, device=device_map["text_embedder"], quantized_qwen=quantized_qwen)
     if not offload: 
         text_embedder = text_embedder.to( device=device_map["text_embedder"]) 
     

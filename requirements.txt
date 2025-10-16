@@ -24,3 +24,4 @@ av
 omegaconf
 ninja
 numpy
+bitsandbytes

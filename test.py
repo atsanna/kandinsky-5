@@ -119,6 +119,12 @@ def parse_args():
         default=False,
         help="Using MagCache (for 50 steps models only)"
     )
+    parser.add_argument(
+        "--qwen_quantization",
+        action='store_true',
+        default=False,
+        help="Use quantized Qwen2.5-VL model (4-bit quantization)"
+    )
     args = parser.parse_args()
     return args
 
@@ -134,6 +140,7 @@ if __name__ == "__main__":
         conf_path=args.config,
         offload=args.offload,
         magcache=args.magcache,
+        quantized_qwen=args.qwen_quantization,
     )
 
     if args.output_filename is None:

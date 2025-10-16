@@ -4,6 +4,7 @@ from transformers import (
     AutoProcessor,
     CLIPTextModel,
     CLIPTokenizer,
+    BitsAndBytesConfig
 )
 
 from .utils import freeze
@@ -52,11 +53,21 @@ class Qwen2_5_VLTextEmbedder:
         "crop_start": {"video": 129, "image": 41},
     }
 
-    def __init__(self, conf, device):
+    def __init__(self, conf, device, quantized_qwen=False):
+        quantization_config = None
+        if quantized_qwen:
+            quantization_config = BitsAndBytesConfig(
+                load_in_4bit=True,
+                bnb_4bit_compute_dtype=torch.bfloat16,
+                bnb_4bit_use_double_quant=True,
+                bnb_4bit_quant_type="nf4"
+            )
+            
         self.model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
             conf.checkpoint_path,
-            dtype=torch.bfloat16,
+            torch_dtype=torch.bfloat16,
             device_map=device,
+            quantization_config=quantization_config
         )
         self.model = freeze(self.model)
         self.model = torch.compile(self.model, dynamic=True)
@@ -95,8 +106,8 @@ class Qwen2_5_VLTextEmbedder:
 
 
 class Kandinsky5TextEmbedder:
-    def __init__(self, conf, device="cpu"):
-        self.embedder = Qwen2_5_VLTextEmbedder(conf.qwen, device)
+    def __init__(self, conf, device="cpu", quantized_qwen=False):
+        self.embedder = Qwen2_5_VLTextEmbedder(conf.qwen, device, quantized_qwen)
         self.clip_embedder = ClipTextEmbedder(conf.clip, device)
         self.conf = conf
 
@@ -111,5 +122,5 @@ class Kandinsky5TextEmbedder:
         return self
 
 
-def get_text_embedder(conf, device="cpu"):
-    return Kandinsky5TextEmbedder(conf, device)
+def get_text_embedder(conf, device="cpu", quantized_qwen=False):
+    return Kandinsky5TextEmbedder(conf, device, quantized_qwen)
