@@ -7,7 +7,7 @@
 </div>
 
 <div align="center">
-  <a href="https://habr.com/ru/companies/sberbank/articles/951800/">Habr</a> | <a href="https://kandinskylab.ai/">Project Page</a> | Technical Report (soon) | 🤗 Weights: <a href=https://huggingface.co/collections/kandinskylab/kandinsky-50-video-lite> Video Lite </a> <a href=https://huggingface.co/collections/kandinskylab/kandinsky-50-video-pro> Video Pro </a> <a href=https://huggingface.co/collections/kandinskylab/kandinsky-50-image-lite> Image Lite </a> | <a href="https://huggingface.co/docs/diffusers/main/en/api/pipelines/kandinsky5"> 🤗 Diffusers </a>  | <a href="https://github.com/kandinskylab/kandinsky-5/blob/main/comfyui/README.md">ComfyUI README</a>
+  <a href="https://habr.com/ru/companies/sberbank/articles/951800/">Habr</a> | <a href="https://kandinskylab.ai/">Project Page</a> | Technical Report (soon) | 🤗 <a href=https://huggingface.co/collections/kandinskylab/kandinsky-50-video-lite> Video Lite </a> / <a href=https://huggingface.co/collections/kandinskylab/kandinsky-50-video-pro> Video Pro </a> / <a href=https://huggingface.co/collections/kandinskylab/kandinsky-50-image-lite> Image Lite </a> | <a href="https://huggingface.co/docs/diffusers/main/en/api/pipelines/kandinsky5"> 🤗 Diffusers </a>  | <a href="https://github.com/kandinskylab/kandinsky-5/blob/main/comfyui/README.md">ComfyUI</a>
 </div>
 
 <h1>Kandinsky 5.0: A family of diffusion models for Video & Image generation</h1>
@@ -148,6 +148,9 @@ Kandinsky 5.0 Image Lite is a 6B image generation model with the following capab
       </td>
       <td>
           <image src="https://github.com/user-attachments/assets/74f3af1f-b11e-4174-9f36-e956b871a6e6" width=200 ></image>
+      </td>
+      <td>
+          <image src="https://github.com/user-attachments/assets/7e469d09-8b96-4691-b929-dd809827adf9" width=200 ></image>
       </td>
   <tr>
 </table>
