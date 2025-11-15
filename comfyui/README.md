@@ -37,7 +37,7 @@ python main.py
 cd ComfyUI/custom_nodes
 
 # Clone this repository and install requirements for model
-git clone https://github.com/ai-forever/Kandinsky-5.git kandinsky
+git clone https://github.com/kandinskylab/kandinsky-5.git kandinsky
 cd kandinsky
 pip install -r requirements.txt
 ```
