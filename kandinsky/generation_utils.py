@@ -559,7 +559,7 @@ def generate_sample_i2v(
         ]
         all_gather(
             tensor_list,
-            latent_visual,
+            latent_visual.contiguous(),
             group=tp_mesh.get_group(mesh_dim="tensor_parallel")
         )
         latent_visual = torch.cat(tensor_list, dim=1)

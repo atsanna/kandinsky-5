@@ -72,10 +72,10 @@ Additionally, we provide Image-to-Video model capable to generate video given in
 | Kandinsky 5.0 T2V Pro SFT 10s HD     |configs/k5_pro_t2v_10s_sft_hd.yaml| 10s            | 100 |🤗 [HF](https://huggingface.co/kandinskylab/Kandinsky-5.0-T2V-Pro-sft-10s) |      -     |
 | Kandinsky 5.0 T2V Pro SFT 5s SD       | configs/k5_pro_t2v_5s_sft_sd.yaml | 5s             | 100 |🤗 [HF](https://huggingface.co/kandinskylab/Kandinsky-5.0-T2V-Pro-sft-5s) |      560     |
 | Kandinsky 5.0 T2V Pro SFT 10s SD     |configs/k5_pro_t2v_10s_sft_sd.yaml| 10s            | 100 |🤗 [HF](https://huggingface.co/kandinskylab/Kandinsky-5.0-T2V-Pro-sft-10s) |      1158     |
-| Kandinsky 5.0 T2V Pro pretrain 5s HD     |-| 5s            | 100 |🤗 [HF](https://huggingface.co/kandinskylab/Kandinsky-5.0-T2V-Pro-pretrain-5s) |      -     |
+| Kandinsky 5.0 T2V Pro pretrain 5s HD     |-| 5s            | 100 |🤗 [HF](https://huggingface.co/kandinskylab/Kandinsky-5.0-T2V-Pro-pretrain-5s) |      1241     |
 | Kandinsky 5.0 T2V Pro pretrain 10s HD     |-| 10s            | 100 |🤗 [HF](https://huggingface.co/kandinskylab/Kandinsky-5.0-T2V-Pro-pretrain-10s) |      -     |
-| Kandinsky 5.0 T2V Pro pretrain 5s SD     |-| 5s            | 100 |🤗 [HF](https://huggingface.co/kandinskylab/Kandinsky-5.0-T2V-Pro-pretrain-5s) |      -     |
-| Kandinsky 5.0 T2V Pro pretrain 10s SD     |-| 10s            | 100 |🤗 [HF](https://huggingface.co/kandinskylab/Kandinsky-5.0-T2V-Pro-pretrain-10s) |      -     |
+| Kandinsky 5.0 T2V Pro pretrain 5s SD     |-| 5s            | 100 |🤗 [HF](https://huggingface.co/kandinskylab/Kandinsky-5.0-T2V-Pro-pretrain-5s) |      560     |
+| Kandinsky 5.0 T2V Pro pretrain 10s SD     |-| 10s            | 100 |🤗 [HF](https://huggingface.co/kandinskylab/Kandinsky-5.0-T2V-Pro-pretrain-10s) |      1158     |
 | Kandinsky 5.0 I2V Pro HD 5s       | configs/k5_pro_i2v_5s_sft_hd.yaml | 5s             | 100 |🤗 [HF](https://huggingface.co/kandinskylab/Kandinsky-5.0-I2V-Pro-sft-5s) |      -     |
 | Kandinsky 5.0 I2V Pro SD 5s       | configs/k5_pro_i2v_5s_sft_sd.yaml | 5s             | 100 |🤗 [HF](https://huggingface.co/kandinskylab/Kandinsky-5.0-I2V-Pro-sft-5s) |      -     |
 
