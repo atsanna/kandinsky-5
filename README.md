@@ -733,8 +733,7 @@ Mikhailov, Anastasiia Kargapoltseva, Anna Dmitrienko, Anastasia Maltseva
 - <B>Post-training Data</B>: Julia Agafonova, Anna Averchenkova, Olga Kim
 - <B>Research Consolidation & Paper</B>: Viacheslav Vasilev, Vladimir Polovnikov
   
-<B>Contributors</B>: Yury Kolabushin, Kirill Chernyshev, Alexander Belykh, Mikhail Mamaev, Anasta-
-sia Aliaskina, Kormilitsyn Semen, Tatiana Nikulina, Olga Vdovchenko, Polina Mikhailova, Polina
+<B>Contributors</B>: Yury Kolabushin, Kirill Chernyshev, Alexander Belykh, Mikhail Mamaev, Anastasia Aliaskina, Kormilitsyn Semen, Tatiana Nikulina, Olga Vdovchenko, Polina Mikhailova, Polina
 Gavrilova, Nikita Osterov, Bulat Akhmatov
 
 <B>Track Leaders</B>: Vladimir Arkhipkin, Vladimir Korviakov, Nikolai Gerasimenko, Denis
@@ -782,4 +781,5 @@ We gratefully acknowledge the open-source projects and research that made Kandin
 - [ComfyUI](https://github.com/comfyanonymous/ComfyUI) — for integration into node-based workflows.  
 
 We deeply appreciate the contributions of these communities and researchers to the open-source ecosystem.
+
 
