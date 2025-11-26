@@ -250,13 +250,14 @@ class Kandinsky5T2VPipeline:
         self.peft_triggers[adapter_name] = self.peft_trigger
 
         processed_adapter_state_dict = {}
-        prefix = "base_model.model."
         for key, value in adapter_state_dict.items():
-            if key.startswith(prefix):
-                new_key = key[len(prefix) :].replace(".default", "")
-            else:
-                new_key = key
+            new_key = key
+            for prefix in ["base_model.model.", "transformer."]:
+                if new_key.startswith(prefix):
+                    new_key = new_key[len(prefix):]
+                    break
 
+            new_key = new_key.replace(".default", "")
             processed_adapter_state_dict[new_key] = value
 
         incompatible_keys = set_peft_model_state_dict(
