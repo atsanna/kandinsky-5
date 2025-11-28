@@ -32,6 +32,11 @@ def read_safetensors_json(file_path):
         return header
 
 class Kandinsky5T2VPipeline:
+    RESOLUTIONS = {
+        512: [(512, 512), (512, 768), (768, 512)],
+        1024: [(1024, 1024), (640, 1408), (1408, 640), (768, 1280), (1280, 768), (896, 1152), (1152, 896)],
+    }
+
     def __init__(
         self,
         device_map: Union[
@@ -60,11 +65,6 @@ class Kandinsky5T2VPipeline:
         self.guidance_weight = conf.model.guidance_weight
 
         self.offload = offload
-
-        self.RESOLUTIONS = {
-            512: [(512, 512), (512, 768), (768, 512)],
-            1024: [(1024, 1024), (640, 1408), (1408, 640), (768, 1280), (1280, 768), (896, 1152), (1152, 896)],
-        }
 
         self._hf_peft_config_loaded = False
         self.peft_config = {}

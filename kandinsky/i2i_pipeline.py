@@ -25,6 +25,10 @@ def find_nearest(available_res, real_res):
 
 
 class Kandinsky5I2IPipeline:
+    RESOLUTIONS = {
+        1024: [(1024, 1024), (640, 1408), (1408, 640), (768, 1280), (1280, 768), (896, 1152), (1152, 896)],
+    }
+    
     def __init__(
         self,
         device_map: Union[
@@ -56,10 +60,6 @@ class Kandinsky5I2IPipeline:
         self.guidance_weight = conf.model.guidance_weight
 
         self.offload = offload
-
-        self.RESOLUTIONS = {
-            1024: [(1024, 1024), (640, 1408), (1408, 640), (768, 1280), (1280, 768), (896, 1152), (1152, 896)],
-        }
 
     def expand_prompt(self, prompt, image):
         width, height = image.size

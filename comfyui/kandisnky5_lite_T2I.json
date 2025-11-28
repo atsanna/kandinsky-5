@@ -1,86 +1,9 @@
 {
   "id": "12380645-f2b5-4537-88ad-dd959a44e47c",
   "revision": 0,
-  "last_node_id": 77,
-  "last_link_id": 167,
+  "last_node_id": 86,
+  "last_link_id": 202,
   "nodes": [
-    {
-      "id": 77,
-      "type": "Kandinsky5VAEDecode",
-      "pos": [
-        635.5618896484375,
-        529.5596313476562
-      ],
-      "size": [
-        239.40000915527344,
-        46
-      ],
-      "flags": {},
-      "order": 7,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 155
-        },
-        {
-          "name": "latent",
-          "type": "LATENT",
-          "link": 156
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "slot_index": 0,
-          "links": [
-            157
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "Kandinsky5VAEDecode",
-        "aux_id": "gen-ai-team/kandinsky-5-inference",
-        "ver": "8ad75bc185e5d43004e1468789a11fc6450cdb2b"
-      },
-      "widgets_values": []
-    },
-    {
-      "id": 54,
-      "type": "SaveAnimatedWEBP",
-      "pos": [
-        953.2196044921875,
-        91.47215270996094
-      ],
-      "size": [
-        487.7459716796875,
-        484.7098693847656
-      ],
-      "flags": {},
-      "order": 8,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 157
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.26"
-      },
-      "widgets_values": [
-        "ComfyUI",
-        24,
-        false,
-        100,
-        "default"
-      ]
-    },
     {
       "id": 72,
       "type": "Kandinsky5TextEncode",
@@ -104,7 +27,7 @@
         {
           "name": "gen_type",
           "type": "ENUM",
-          "link": 164
+          "link": 200
         },
         {
           "name": "image",
@@ -125,7 +48,7 @@
           "type": "CONDITION",
           "slot_index": 0,
           "links": [
-            161
+            195
           ]
         },
         {
@@ -133,7 +56,7 @@
           "type": "CONDITION",
           "slot_index": 1,
           "links": [
-            160
+            196
           ]
         }
       ],
@@ -158,7 +81,7 @@
         200
       ],
       "flags": {},
-      "order": 3,
+      "order": 4,
       "mode": 0,
       "inputs": [
         {
@@ -169,7 +92,7 @@
         {
           "name": "gen_type",
           "type": "ENUM",
-          "link": 165
+          "link": 202
         },
         {
           "name": "image",
@@ -190,7 +113,7 @@
           "type": "CONDITION",
           "slot_index": 0,
           "links": [
-            159
+            197
           ]
         },
         {
@@ -198,7 +121,7 @@
           "type": "CONDITION",
           "slot_index": 1,
           "links": [
-            158
+            198
           ]
         }
       ],
@@ -208,22 +131,22 @@
         "ver": "8ad75bc185e5d43004e1468789a11fc6450cdb2b"
       },
       "widgets_values": [
-        "Static, 2D cartoon, cartoon, 2d animation, paintings, images, worst quality, low quality, ugly, deformed, walking backwards"
+        "blurry, low resolution, low quality, jpeg artifacts, noise, grainy, out of focus, distorted, deformed, bad anatomy, bad cluttered background, messy background"
       ]
     },
     {
       "id": 68,
       "type": "expand_prompt",
       "pos": [
-        -273.5207824707031,
-        268.80975341796875
+        -281.05573515567386,
+        269.1219340950637
       ],
       "size": [
         400,
         200
       ],
       "flags": {},
-      "order": 4,
+      "order": 3,
       "mode": 0,
       "inputs": [
         {
@@ -234,7 +157,7 @@
         {
           "name": "gen_type",
           "type": "ENUM",
-          "link": 167
+          "link": 201
         },
         {
           "name": "image",
@@ -265,15 +188,15 @@
         "ver": "ef383d80876b498f553b13c8ae99d423308b0aa8"
       },
       "widgets_values": [
-        "A heroic astronaut in a sleek, futuristic white-and-silver space suit with reflective visor down, galloping on a majestic black stallion through rugged, snow-capped mountain peaks at golden hour. The horse’s mane flows wildly as it leaps over a rocky ridge, kicking up dust, while the astronaut grips the reins tightly, their suit subtly illuminated by the warm glow of the setting sun. Dramatic low-angle shot, with vast misty valleys below and a sky shifting from deep orange to twilight purple. Cinematic lighting, hyper-detailed, with a sense of epic adventure and sci-fi wonder."
+        "Crocodile flying at the space "
       ]
     },
     {
       "id": 71,
       "type": "Kandinsky5LoadTextEmbedders",
       "pos": [
-        -241.9403839111328,
-        25.038286209106445
+        -237.60498604646926,
+        92.16630795938676
       ],
       "size": [
         340.20001220703125,
@@ -303,19 +226,19 @@
       "widgets_values": [
         "text_encoder",
         "text_encoder2",
-        false
+        true
       ]
     },
     {
-      "id": 76,
-      "type": "Kandinsky5LoadVAE",
+      "id": 74,
+      "type": "Kandinsky5LoadDiT",
       "pos": [
-        612.3971557617188,
-        23.200862884521484
+        -270.02443873793015,
+        540.454487344391
       ],
       "size": [
         315,
-        58
+        98
       ],
       "flags": {},
       "order": 1,
@@ -327,41 +250,7 @@
           "type": "MODEL",
           "slot_index": 0,
           "links": [
-            155
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "Kandinsky5LoadVAE",
-        "aux_id": "gen-ai-team/kandinsky-5-inference",
-        "ver": "8ad75bc185e5d43004e1468789a11fc6450cdb2b"
-      },
-      "widgets_values": [
-        "hunyan_vae"
-      ]
-    },
-    {
-      "id": 74,
-      "type": "Kandinsky5LoadDiT",
-      "pos": [
-        208.43588256835938,
-        27.57303810119629
-      ],
-      "size": [
-        315,
-        98
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "model",
-          "type": "MODEL",
-          "slot_index": 0,
-          "links": [
-            149
+            192
           ]
         },
         {
@@ -369,17 +258,17 @@
           "type": "CONFIG",
           "slot_index": 1,
           "links": [
-            162
+            193
           ]
         },
         {
           "name": "gen_type",
           "type": "ENUM",
           "links": [
-            164,
-            165,
-            166,
-            167
+            194,
+            200,
+            201,
+            202
           ]
         }
       ],
@@ -389,18 +278,49 @@
         "ver": "8ad75bc185e5d43004e1468789a11fc6450cdb2b"
       },
       "widgets_values": [
-        "kandinsky5lite_t2v_sft_5s.safetensors"
+        "kandinsky5lite_t2i.safetensors"
       ]
     },
     {
-      "id": 75,
-      "type": "Kandinsky5Generate",
+      "id": 84,
+      "type": "Kandinsky5LoadVAE",
       "pos": [
-        610.8881225585938,
-        160.90586853027344
+        266.930943217689,
+        23.183499707847712
       ],
       "size": [
-        315,
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            186
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Kandinsky5LoadVAE"
+      },
+      "widgets_values": [
+        "flux_vae"
+      ]
+    },
+    {
+      "id": 86,
+      "type": "Kandinsky5Generate",
+      "pos": [
+        631.7840380709598,
+        193.69129940479024
+      ],
+      "size": [
+        270,
         390
       ],
       "flags": {},
@@ -410,37 +330,37 @@
         {
           "name": "model",
           "type": "MODEL",
-          "link": 149
+          "link": 192
         },
         {
           "name": "config",
           "type": "CONFIG",
-          "link": 162
+          "link": 193
         },
         {
           "name": "positive_emb",
           "type": "CONDITION",
-          "link": 161
+          "link": 195
         },
         {
           "name": "positive_clip",
           "type": "CONDITION",
-          "link": 160
+          "link": 196
         },
         {
           "name": "negative_emb",
           "type": "CONDITION",
-          "link": 159
+          "link": 197
         },
         {
           "name": "negative_clip",
           "type": "CONDITION",
-          "link": 158
+          "link": 198
         },
         {
           "name": "gen_type",
           "type": "ENUM",
-          "link": 166
+          "link": 194
         },
         {
           "name": "image_latent",
@@ -453,16 +373,13 @@
         {
           "name": "latent",
           "type": "LATENT",
-          "slot_index": 0,
           "links": [
-            156
+            199
           ]
         }
       ],
       "properties": {
-        "Node name for S&R": "Kandinsky5Generate",
-        "aux_id": "gen-ai-team/kandinsky-5-inference",
-        "ver": "8ad75bc185e5d43004e1468789a11fc6450cdb2b"
+        "Node name for S&R": "Kandinsky5Generate"
       },
       "widgets_values": [
         50,
@@ -472,8 +389,78 @@
         5,
         10,
         "bfloat16",
-        903,
+        1880,
         "randomize"
+      ]
+    },
+    {
+      "id": 77,
+      "type": "Kandinsky5VAEDecode",
+      "pos": [
+        643.0271707684217,
+        57.97156606940486
+      ],
+      "size": [
+        239.40000915527344,
+        46
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 186
+        },
+        {
+          "name": "latent",
+          "type": "LATENT",
+          "link": 199
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "slot_index": 0,
+          "links": [
+            180
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Kandinsky5VAEDecode",
+        "aux_id": "gen-ai-team/kandinsky-5-inference",
+        "ver": "8ad75bc185e5d43004e1468789a11fc6450cdb2b"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 81,
+      "type": "SaveImage",
+      "pos": [
+        938.4661822008842,
+        218.98657175355626
+      ],
+      "size": [
+        313.490234375,
+        270
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 180
+        }
+      ],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "ComfyUI"
       ]
     }
   ],
@@ -503,78 +490,6 @@
       "MODEL"
     ],
     [
-      149,
-      74,
-      0,
-      75,
-      0,
-      "MODEL"
-    ],
-    [
-      155,
-      76,
-      0,
-      77,
-      0,
-      "MODEL"
-    ],
-    [
-      156,
-      75,
-      0,
-      77,
-      1,
-      "LATENT"
-    ],
-    [
-      157,
-      77,
-      0,
-      54,
-      0,
-      "IMAGE"
-    ],
-    [
-      158,
-      73,
-      1,
-      75,
-      5,
-      "CONDITION"
-    ],
-    [
-      159,
-      73,
-      0,
-      75,
-      4,
-      "CONDITION"
-    ],
-    [
-      160,
-      72,
-      1,
-      75,
-      3,
-      "CONDITION"
-    ],
-    [
-      161,
-      72,
-      0,
-      75,
-      2,
-      "CONDITION"
-    ],
-    [
-      162,
-      74,
-      1,
-      75,
-      1,
-      "CONFIG"
-    ],
-    [
       163,
       68,
       0,
@@ -583,7 +498,87 @@
       "PROMPT"
     ],
     [
-      164,
+      180,
+      77,
+      0,
+      81,
+      0,
+      "IMAGE"
+    ],
+    [
+      186,
+      84,
+      0,
+      77,
+      0,
+      "VAE"
+    ],
+    [
+      192,
+      74,
+      0,
+      86,
+      0,
+      "MODEL"
+    ],
+    [
+      193,
+      74,
+      1,
+      86,
+      1,
+      "CONFIG"
+    ],
+    [
+      194,
+      74,
+      2,
+      86,
+      6,
+      "ENUM"
+    ],
+    [
+      195,
+      72,
+      0,
+      86,
+      2,
+      "CONDITION"
+    ],
+    [
+      196,
+      72,
+      1,
+      86,
+      3,
+      "CONDITION"
+    ],
+    [
+      197,
+      73,
+      0,
+      86,
+      4,
+      "CONDITION"
+    ],
+    [
+      198,
+      73,
+      1,
+      86,
+      5,
+      "CONDITION"
+    ],
+    [
+      199,
+      86,
+      0,
+      77,
+      1,
+      "LATENT"
+    ],
+    [
+      200,
       74,
       2,
       72,
@@ -591,26 +586,18 @@
       "ENUM"
     ],
     [
-      165,
+      201,
       74,
       2,
-      73,
+      68,
       1,
       "ENUM"
     ],
     [
-      166,
+      202,
       74,
       2,
-      75,
-      6,
-      "ENUM"
-    ],
-    [
-      167,
-      74,
-      2,
-      68,
+      73,
       1,
       "ENUM"
     ]
@@ -619,10 +606,10 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.9455870862507313,
+      "scale": 0.549959245895997,
       "offset": [
-        410.2661305485502,
-        150.03475100069574
+        1358.2601888415065,
+        231.0797833924834
       ]
     },
     "frontendVersion": "1.28.8"
