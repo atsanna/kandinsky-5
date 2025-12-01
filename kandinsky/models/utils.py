@@ -44,10 +44,10 @@ def fractal_flatten(x, rope, shape, block_mask=False):
 def fractal_unflatten(x, shape, block_mask=False):
     if block_mask:
         pixel_size = 8
-        x = x.reshape(-1, pixel_size**2, *x.shape[1:])
+        x = x.reshape(-1, pixel_size**2, x.shape[-1])
         x = local_merge(x, shape, (1, pixel_size, pixel_size), dim=0)
     else:
-        x = x.reshape(*shape, *x.shape[1:])
+        x = x.reshape(*shape, x.shape[-1])
     return x
 
 

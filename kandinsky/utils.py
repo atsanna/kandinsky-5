@@ -48,7 +48,7 @@ def get_T2V_pipeline(
     offload: bool = False,
     magcache: bool = False,
     quantized_qwen: bool = False,
-    text_token_padding: bool = True,
+    text_token_padding: bool = False,
     attention_engine: str = "auto",
 ) -> Kandinsky5T2VPipeline:
     if not isinstance(device_map, dict):
@@ -131,7 +131,7 @@ def get_T2V_pipeline(
     if not offload:
         vae = vae.to(device=device_map["vae"]) 
 
-    dit = get_dit(conf.model.dit_params)
+    dit = get_dit(conf.model.dit_params, text_token_padding=text_token_padding)
 
     if magcache:
         mag_ratios = conf.magcache.mag_ratios
@@ -186,7 +186,7 @@ def get_I2V_pipeline(
     offload: bool = False,
     magcache: bool = False,
     quantized_qwen: bool = False,
-    text_token_padding: bool = True,
+    text_token_padding: bool = False,
     attention_engine: str = "auto",
 ) -> Kandinsky5T2VPipeline:
     if not isinstance(device_map, dict):
@@ -268,7 +268,7 @@ def get_I2V_pipeline(
     if not offload:
         vae = vae.to(device=device_map["vae"]) 
 
-    dit = get_dit(conf.model.dit_params)
+    dit = get_dit(conf.model.dit_params, text_token_padding=text_token_padding)
 
     if magcache:
         mag_ratios = conf.magcache.mag_ratios
@@ -328,7 +328,7 @@ def _get_TI2I_params(
     offload: bool = False,
     magcache: bool = False,
     quantized_qwen: bool = False,
-    text_token_padding: bool = True,
+    text_token_padding: bool = False,
     attention_engine: str = "auto",
 ) -> Kandinsky5T2IPipeline:
     assert resolution in [1024]
@@ -408,7 +408,7 @@ def _get_TI2I_params(
     if not offload:
         vae = vae.to(device=device_map["vae"])
 
-    dit = get_dit(conf.model.dit_params)
+    dit = get_dit(conf.model.dit_params, text_token_padding=text_token_padding)
 
     if magcache:
         mag_ratios = conf.magcache.mag_ratios
@@ -452,7 +452,7 @@ def get_T2I_pipeline(
     offload: bool = False,
     magcache: bool = False,
     quantized_qwen: bool = False,
-    text_token_padding: bool = True,
+    text_token_padding: bool = False,
     attention_engine: str = "auto",
 ) -> Kandinsky5T2IPipeline:
     kwargs = _get_TI2I_params(
@@ -489,7 +489,7 @@ def get_I2I_pipeline(
     offload: bool = False,
     magcache: bool = False,
     quantized_qwen: bool = False,
-    text_token_padding: bool = True,
+    text_token_padding: bool = False,
     attention_engine: str = "auto",
 ) -> Kandinsky5T2IPipeline:
     kwargs = _get_TI2I_params(

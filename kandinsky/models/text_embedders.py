@@ -120,7 +120,7 @@ class Qwen2_5_VLTextEmbedder:
                 truncation=True,
                 return_tensors="pt", 
                 padding=True,
-                max_length = max_length
+                max_length=max_length
             ).to(self.model.device)
 
             with torch.no_grad():
@@ -148,7 +148,7 @@ class Qwen2_5_VLTextEmbedder:
             seq_length = embeds.shape[1]
             cu_seqlens = torch.tensor([0, seq_length], dtype=torch.int32)
         else:
-            embeds = embeds[attention_mask.bool()]
+            embeds = embeds[attention_mask.bool()].unsqueeze(0)
             cu_seqlens = torch.cumsum(attention_mask.sum(1), dim=0)
             cu_seqlens = torch.cat([torch.zeros_like(cu_seqlens)[:1], cu_seqlens]).to(
                 dtype=torch.int32
@@ -208,7 +208,9 @@ class Kandinsky5TextEmbedder:
     def encode(self, texts, images=None, type_of_content="image"):
         text_embeds, cu_seqlens, attention_mask = self.embedder(texts, images=images, type_of_content=type_of_content)
         pooled_embed = self.clip_embedder(texts)
-        return {"text_embeds": text_embeds, "pooled_embed": pooled_embed}, cu_seqlens, attention_mask.to(torch.bool)
+        if attention_mask is not None:
+            attention_mask = attention_mask.to(torch.bool)
+        return {"text_embeds": text_embeds, "pooled_embed": pooled_embed}, cu_seqlens, attention_mask
 
     def to(self, device):
         self.embedder.model = self.embedder.model.to(device)
