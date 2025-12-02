@@ -20,12 +20,12 @@ from .utils import fractal_flatten, fractal_unflatten
 
 
 class TransformerEncoderBlock(nn.Module):
-    def __init__(self, model_dim, time_dim, ff_dim, head_dim):
+    def __init__(self, model_dim, time_dim, ff_dim, head_dim, attention_engine="auto", text_token_padding=False):
         super().__init__()
         self.text_modulation = Modulation(time_dim, model_dim, 6)
 
         self.self_attention_norm = nn.LayerNorm(model_dim, elementwise_affine=False)
-        self.self_attention = MultiheadSelfAttentionEnc(model_dim, head_dim)
+        self.self_attention = MultiheadSelfAttentionEnc(model_dim, head_dim, attention_engine, text_token_padding)
 
         self.feed_forward_norm = nn.LayerNorm(model_dim, elementwise_affine=False)
         self.feed_forward = FeedForward(model_dim, ff_dim)
@@ -45,7 +45,7 @@ class TransformerEncoderBlock(nn.Module):
 
 
 class TransformerDecoderBlock(nn.Module):
-    def __init__(self, model_dim, time_dim, ff_dim, head_dim, attention_engine="auto"):
+    def __init__(self, model_dim, time_dim, ff_dim, head_dim, attention_engine="auto", text_token_padding=False):
         super().__init__()
         self.visual_modulation = Modulation(time_dim, model_dim, 9)
 
@@ -53,7 +53,7 @@ class TransformerDecoderBlock(nn.Module):
         self.self_attention = MultiheadSelfAttentionDec(model_dim, head_dim, attention_engine)
 
         self.cross_attention_norm = nn.LayerNorm(model_dim, elementwise_affine=False)
-        self.cross_attention = MultiheadCrossAttention(model_dim, head_dim)
+        self.cross_attention = MultiheadCrossAttention(model_dim, head_dim, attention_engine,text_token_padding)
 
         self.feed_forward_norm = nn.LayerNorm(model_dim, elementwise_affine=False)
         self.feed_forward = FeedForward(model_dim, ff_dim)
@@ -95,7 +95,8 @@ class DiffusionTransformer3D(nn.Module):
         axes_dims=(16, 24, 24),
         visual_cond=False,
         attention_engine="auto",
-        instruct_type=None
+        instruct_type=None,
+        text_token_padding=False
     ):
         super().__init__()
         self.instruct_type = instruct_type
@@ -104,6 +105,7 @@ class DiffusionTransformer3D(nn.Module):
         self.model_dim = model_dim
         self.patch_size = patch_size
         self.visual_cond = visual_cond
+        self.text_token_padding = text_token_padding
 
         visual_embed_dim = 2 * in_visual_dim + 1 if visual_cond or instruct_type=='channel' else in_visual_dim
         self.time_embeddings = TimeEmbeddings(model_dim, time_dim)
@@ -114,7 +116,7 @@ class DiffusionTransformer3D(nn.Module):
         self.text_rope_embeddings = RoPE1D(head_dim)
         self.text_transformer_blocks = nn.ModuleList(
             [
-                TransformerEncoderBlock(model_dim, time_dim, ff_dim, head_dim)
+                TransformerEncoderBlock(model_dim, time_dim, ff_dim, head_dim, attention_engine, text_token_padding)
                 for _ in range(num_text_blocks)
             ]
         )
@@ -122,14 +124,14 @@ class DiffusionTransformer3D(nn.Module):
         self.visual_rope_embeddings = RoPE3D(axes_dims)
         self.visual_transformer_blocks = nn.ModuleList(
             [
-                TransformerDecoderBlock(model_dim, time_dim, ff_dim, head_dim, attention_engine)
+                TransformerDecoderBlock(model_dim, time_dim, ff_dim, head_dim, attention_engine, text_token_padding)
                 for _ in range(num_visual_blocks)
             ]
         )
 
         self.out_layer = OutLayer(model_dim, time_dim, out_visual_dim, patch_size)
 
-    @torch.compile()
+    #@torch.compile()
     def before_text_transformer_blocks(self, text_embed, time, pooled_text_embed, x,
                                        text_rope_pos):
         text_embed = self.text_embeddings(text_embed)
@@ -147,7 +149,7 @@ class DiffusionTransformer3D(nn.Module):
         to_fractal = sparse_params["to_fractal"] if sparse_params is not None else False
         visual_embed, visual_rope = fractal_flatten(visual_embed, visual_rope, visual_shape,
                                                     block_mask=to_fractal)
-        return visual_embed, visual_shape, to_fractal, visual_rope
+        return visual_embed.unsqueeze(0), visual_shape, to_fractal, visual_rope
 
     def after_blocks(self, visual_embed, visual_shape, to_fractal, text_embed, time_embed):
         visual_embed = fractal_unflatten(visual_embed, visual_shape, block_mask=to_fractal)
@@ -178,11 +180,11 @@ class DiffusionTransformer3D(nn.Module):
         for visual_transformer_block in self.visual_transformer_blocks:
             visual_embed = visual_transformer_block(visual_embed, text_embed, time_embed,
                                                     visual_rope, sparse_params, attention_mask)
-        
+
         x = self.after_blocks(visual_embed, visual_shape, to_fractal, text_embed, time_embed)
         return x
 
 
-def get_dit(conf):
-    dit = DiffusionTransformer3D(**conf)
+def get_dit(conf, text_token_padding=False):
+    dit = DiffusionTransformer3D(**conf, text_token_padding=text_token_padding)
     return dit

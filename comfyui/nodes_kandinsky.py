@@ -336,8 +336,6 @@ class Kandinsky5Generate(ComfyNodeABC):
             length, height, width = 1 + (length - 1)//4, height // 8, width // 8
         bs_text_embed, text_cu_seqlens, attention_mask = positive_emb
         bs_null_text_embed, null_text_cu_seqlens, null_attention_mask = negative_emb
-        attention_mask  = attention_mask.bool()
-        null_attention_mask  = null_attention_mask.bool()
         text_embed = {"text_embeds": bs_text_embed, "pooled_embed": positive_clip }
         null_embed = {"text_embeds": bs_null_text_embed, "pooled_embed": negative_clip }
 
