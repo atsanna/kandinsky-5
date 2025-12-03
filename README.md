@@ -21,7 +21,8 @@ https://github.com/user-attachments/assets/b06f56de-1b05-4def-a611-1a3159ed71b0
 
 
 ## Project Updates
-- 🔥 ```2025/11/26```:  our simplified LoRa training is available on [kandinsky-5-lora-train](https://github.com/kandinskylab/kandinsky-5-lora-train)
+- 🔥 ```2025/12/03```: our Kandinsky 5.0 Video Pro and Image Lite models are [accepted to diffusers](https://github.com/huggingface/diffusers/commit/d0c54e5563c3245b57d2b374e8e334da77305c05)
+- 🔥 ```2025/11/26```: our simplified LoRa training is available on [kandinsky-5-lora-train](https://github.com/kandinskylab/kandinsky-5-lora-train)
 - 🔥 ```2025/11/24```: LoRas for Camera control is open-sourced: [Lite LoRAs](https://huggingface.co/collections/kandinskylab/kandinsky-50-video-lite-loras) and [Pro LoRAs](https://huggingface.co/collections/kandinskylab/kandinsky-50-video-pro-loras). Inference code is avaibale in `examples/inference_examples_i2v_lora.ipynb` and `examples/inference_examples_t2v_lora.ipynb`
 - 🔥 ```2025/11/20```: `Kandinsky 5.0 Video Pro` is open-sourced. T2V & I2V models are available.
 - 🔥 ```2025/11/15```: `Kandinsky 5.0 Lite I2V` & `Kandinsky 5.0 Lite T2I` models are open-sourced.
@@ -788,6 +789,7 @@ We gratefully acknowledge the open-source projects and research that made Kandin
 - [ComfyUI](https://github.com/comfyanonymous/ComfyUI) — for integration into node-based workflows.  
 
 We deeply appreciate the contributions of these communities and researchers to the open-source ecosystem.
+
 
 
 
