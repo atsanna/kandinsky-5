@@ -19,15 +19,25 @@ from .generation_utils import generate_sample_i2v
 torch._dynamo.config.suppress_errors = True
 torch._dynamo.config.verbose = True
 
-def resize_image(image, max_area, divisibility=16):
+
+def resize_image(image, max_area, divisibility=16, world_size=1):
     h, w = image.shape[2:]
     area = h * w
+
+    if divisibility == 16:
+        if world_size in [2, 4]:
+            divisibility *= 2
+        elif world_size == 8:
+            divisibility *= 4
+
     k = sqrt(max_area / area) / divisibility
     new_h = int(round(h * k) * divisibility)
     new_w = int(round(w * k) * divisibility)
     return F.resize(image, (new_h, new_w)), k
 
-def get_first_frame_from_image(image, vae, device, max_area, divisibility):
+def get_first_frame_from_image(
+    image, vae, device, max_area, divisibility, world_size,
+):
     if isinstance(image, str):
         pil_image = Image.open(image).convert('RGB')
     elif isinstance(image, Image.Image):
@@ -36,7 +46,10 @@ def get_first_frame_from_image(image, vae, device, max_area, divisibility):
         raise ValueError(f"unknown image type: {type(image)}")
 
     image = F.pil_to_tensor(pil_image).unsqueeze(0)
-    image, k = resize_image(image, max_area=max_area, divisibility=divisibility)
+    image, k = resize_image(
+        image, max_area=max_area, 
+        divisibility=divisibility, world_size=world_size,
+    )
     image = image / 127.5 - 1.
 
     with torch.no_grad():
@@ -60,6 +73,7 @@ def read_safetensors_json(file_path):
         # Step 3: Parse the JSON header
         header = json.loads(header_str)
         return header
+
 
 class Kandinsky5I2VPipeline:
     def __init__(
@@ -132,7 +146,10 @@ class Kandinsky5I2VPipeline:
 
         if self.offload:
             self.vae = self.vae.to(self.device_map["vae"], non_blocking=True)
-        image, image_lat, k = get_first_frame_from_image(image, self.vae, self.device_map["vae"], self.max_area, self.divisibility)
+        image, image_lat, k = get_first_frame_from_image(
+            image, self.vae, self.device_map["vae"], self.max_area, 
+            self.divisibility, self.world_size,
+        )
         if self.offload:
             self.vae = self.vae.to("cpu", non_blocking=True)
 
@@ -213,8 +230,8 @@ class Kandinsky5I2VPipeline:
                      adapter_name: Optional[str] = None, trigger: Optional[str] = None) -> None:
         if adapter_name is None:
             adapter_name = "default"
-        if self._hf_peft_config_loaded and adapter_name in self.peft_config:
-            raise ValueError(f"Adapter with name {adapter_name} already exists. Please use a different name.")
+        # if self._hf_peft_config_loaded and adapter_name in self.peft_config:
+        #     raise ValueError(f"Adapter with name {adapter_name} already exists. Please use a different name.")
 
         if not isinstance(adapter_config, PeftConfig):
             try:

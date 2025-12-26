@@ -101,46 +101,90 @@ def parallelize_dit(model, tp_mesh):
         parallelize_module(model.out_layer, tp_mesh, plan)
 
     return model
+  
+  
+def get_module_by_name(module, access_string):
+    names = access_string.split('.')
+    cur_m = module
+    for n in names:
+        cur_m = getattr(cur_m, n, None)
+        if cur_m is None:
+            break
+    return cur_m
+  
+  
+def update_plan_for_lora(root_module, plan):
+    new_plan = {}
+
+    for key, val in plan.items():
+        m = get_module_by_name(root_module, key)
+
+        if "lora" in str(m.__class__).lower() and hasattr(m, 'base_layer'):
+            new_plan[key+".base_layer"] = val
+
+            if isinstance(val, PrepareModuleOutput):
+                new_plan[key+".lora_B.default"] = val
+
+            if isinstance(val, PrepareModuleInput):
+                new_plan[key+".lora_A.default"] = val
+
+        else:
+            new_plan[key] = val
+
+    plan = new_plan
+    return new_plan
 
 
-def parallelize_seq(model, tp_mesh):
+def parallelize_seq(model, tp_mesh, mode='t2v'):
     if tp_mesh.size() > 1:
-        plan_in = {
-            "out_layer": PrepareModuleInput(
-                    input_layouts=(Replicate(), None, None),
-                    desired_input_layouts=(Shard(1), None, None),
-                    use_local_output=True
-                ),
+        if mode != 'i2v':
+            plan_in = {
+                "out_layer": PrepareModuleInput(
+                        input_layouts=(Replicate(), None, None),
+                        desired_input_layouts=(Shard(1), None, None),
+                        use_local_output=True
+                    ),
+                }
+            
+            if hasattr(model, 'base_model'):
+                parallelize_module(model.base_model.model, tp_mesh, plan_in)
+            else:
+                parallelize_module(model, tp_mesh, plan_in)
+
+            plan_out = {
+                "visual_embeddings": PrepareModuleOutput(
+                    output_layouts=(Shard(1)),
+                    desired_output_layouts=(Replicate()),
+                    )
             }
-        parallelize_module(model, tp_mesh, plan_in)
-        plan_out = {
-            "visual_embeddings": PrepareModuleOutput(
-                output_layouts=(Shard(1)),
-                desired_output_layouts=(Replicate()),
-                )
-        }
-        parallelize_module(model, tp_mesh, plan_out)
+            
+            if hasattr(model, 'base_model'):
+                parallelize_module(model.base_model.model, tp_mesh, plan_out)
+            else:
+                parallelize_module(model, tp_mesh, plan_out)
 
         for i, block in enumerate(model.visual_transformer_blocks):
-            plan = {
-                "self_attention_norm": SequenceParallel(sequence_dim=0, use_local_output=True),
+            plan = update_plan_for_lora(
+                block,
+                {
+                "self_attention_norm": SequenceParallel(sequence_dim=1, use_local_output=True),
                 "self_attention.to_query": PrepareModuleOutput(
-                    output_layouts=(Shard(0)), desired_output_layouts=(Shard(-1))
+                    output_layouts=(Shard(1)), desired_output_layouts=(Shard(-1))
                 ),
                 "self_attention.to_key": PrepareModuleOutput(
-                    output_layouts=(Shard(0)), desired_output_layouts=(Shard(-1))
+                    output_layouts=(Shard(1)), desired_output_layouts=(Shard(-1))
                 ),
                 "self_attention.to_value": PrepareModuleOutput(
-                    output_layouts=(Shard(0)), desired_output_layouts=(Shard(-1))
+                    output_layouts=(Shard(1)), desired_output_layouts=(Shard(-1))
                 ),
                 "self_attention.out_layer": PrepareModuleInput(
                     input_layouts=(Shard(-1)),
                     desired_input_layouts=(Shard(0)),
                     use_local_output=True,
                 ),
-                "cross_attention_norm": SequenceParallel(sequence_dim=0, use_local_output=True),
+                "cross_attention_norm": SequenceParallel(sequence_dim=1, use_local_output=True),
                 "cross_attention.to_query": PrepareModuleOutput(
-                    output_layouts=(Shard(0)), desired_output_layouts=(Shard(-1))
+                    output_layouts=(Shard(1)), desired_output_layouts=(Shard(-1))
                 ),
                 "cross_attention.to_key": PrepareModuleOutput(
                     output_layouts=(Replicate()), desired_output_layouts=(Shard(-1))
@@ -153,8 +197,10 @@ def parallelize_seq(model, tp_mesh):
                     desired_input_layouts=(Shard(0)),
                     use_local_output=True,
                 ),
-                "feed_forward_norm": SequenceParallel(sequence_dim=0, use_local_output=True),
-            }
+                "feed_forward_norm": SequenceParallel(sequence_dim=1, use_local_output=True),
+                }
+            )
+
             self_attn = block.self_attention
             self_attn.num_heads = self_attn.num_heads // tp_mesh.size()
             cross_attn = block.cross_attention
@@ -167,7 +213,7 @@ def parallelize_seq(model, tp_mesh):
                     tp_mesh,
                     PrepareModuleInput(
                         input_layouts=(Replicate(),None,None,None,None, None),
-                        desired_input_layouts=(Shard(0),None,None,None,None, None),
+                        desired_input_layouts=(Shard(1),None,None,None,None, None),
                         use_local_output=True,
                     ),
                 )
@@ -177,7 +223,7 @@ def parallelize_seq(model, tp_mesh):
                     block,
                     tp_mesh,
                     PrepareModuleOutput(
-                        output_layouts=(Shard(0)),
+                        output_layouts=(Shard(1)),
                         desired_output_layouts=(Replicate())
                     ),
                 )        

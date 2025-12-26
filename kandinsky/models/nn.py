@@ -6,7 +6,7 @@ import torch.nn.functional as F
 from torch.nn.attention.flex_attention import flex_attention
 
 from .utils import get_freqs, nablaT_v2
-from.attention import SelfAttentionEngine
+from .attention import SelfAttentionEngine
 
 @torch.compile()
 @torch.autocast(device_type="cuda", dtype=torch.float32)
@@ -235,7 +235,6 @@ class MultiheadSelfAttentionDec(nn.Module):
         query = query.reshape(*shape, self.num_heads, -1)
         key = key.reshape(*shape, self.num_heads, -1)
         value = value.reshape(*shape, self.num_heads, -1)
-
         return query, key, value
 
     @torch.compile()
@@ -273,7 +272,7 @@ class MultiheadSelfAttentionDec(nn.Module):
             .transpose(1, 2)
             .contiguous()
         )
-        out = out.flatten(-2, -1)
+        out = out[0].flatten(-2, -1)
         return out
 
     @torch.compile()
@@ -283,6 +282,7 @@ class MultiheadSelfAttentionDec(nn.Module):
     def forward(self, x, rope, sparse_params=None):
         query, key, value = self.get_qkv(x)
         query, key = self.norm_qk(query, key)
+
         query = apply_rotary(query, rope).type_as(query)
         key = apply_rotary(key, rope).type_as(key)
 

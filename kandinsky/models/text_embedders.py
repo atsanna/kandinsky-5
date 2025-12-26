@@ -45,7 +45,7 @@ class Qwen2_5_VLTextEmbedder:
     PROMPT_TEMPLATE = {
         "template": {
             "video": (
-                "<|im_start|>system\nYou are a prompt engineer. Describe the video in detail.",
+                "<|im_start|>system\nYou are a promt engineer. Describe the video in detail.",
                 "Describe how the camera moves or shakes, describe the zoom and view angle, whether it follows the objects.",
                 "Describe the location of the video, main characters or objects and their action.",
                 "Describe the dynamism of the video and presented actions.",
@@ -55,7 +55,7 @@ class Qwen2_5_VLTextEmbedder:
                 "<|im_start|>user\n{}<|im_end|>"
             ),
             "image2video": (
-                "<|im_start|>system\nYou are a prompt engineer. Your task is to create a highly detailed and effective video description based on a provided input image.",
+                "<|im_start|>system\nYou are a promt engineer. Your task is to create a highly detailed and effective video description based on a provided input image.",
                 "Describe how the camera moves or shakes, describe the zoom and view angle, whether it follows the objects.",
                 "Describe main characters actions.",
                 "Describe the dynamism of the video and presented actions.",
@@ -65,11 +65,11 @@ class Qwen2_5_VLTextEmbedder:
                 "<|im_start|>user\n{}<|im_end|>"
             ),
             "image": (
-                "<|im_start|>system\nYou are a prompt engineer. Describe the image by detailing the color, shape, size, texture, quantity, text, spatial relationships of the objects and background:<|im_end|>",
+                "<|im_start|>system\nYou are a promt engineer. Describe the image by detailing the color, shape, size, texture, quantity, text, spatial relationships of the objects and background:<|im_end|>",
                 "<|im_start|>user\n{}<|im_end|>"
             ),
             "image_edit": (
-                "<|im_start|>system\nYou are a prompt engineer. Based on the provided source image (first image) and target image (second image), create an interesting text prompt that can be used together with the source image to create the target image:<|im_end|>",
+                "<|im_start|>system\nYou are a promt engineer. Based on the provided source image (first image) and target image (second image), create an interesting text prompt that can be used together with the source image to create the target image:<|im_end|>",
                 "<|im_start|>user\n{}"
             )
         },

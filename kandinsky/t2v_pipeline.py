@@ -222,8 +222,8 @@ class Kandinsky5T2VPipeline:
                      adapter_name: Optional[str] = None, trigger: Optional[str] = None) -> None:
         if adapter_name is None:
             adapter_name = "default"
-        if self._hf_peft_config_loaded and adapter_name in self.peft_config:
-            raise ValueError(f"Adapter with name {adapter_name} already exists. Please use a different name.")
+        # if self._hf_peft_config_loaded and adapter_name in self.peft_config:
+        #     raise ValueError(f"Adapter with name {adapter_name} already exists. Please use a different name.")
 
         if not isinstance(adapter_config, PeftConfig):
             try:

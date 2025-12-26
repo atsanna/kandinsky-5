@@ -1,1 +1,1 @@
-from .utils import get_T2V_pipeline, get_I2V_pipeline, get_T2I_pipeline, get_I2I_pipeline
+from .utils import get_video_pipeline, get_image_pipeline, get_distributed_pipeline

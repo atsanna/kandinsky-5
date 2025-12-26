@@ -5,6 +5,9 @@ import logging
 
 import torch
 
+import os
+from huggingface_hub import snapshot_download
+
 from kandinsky.utils import set_hf_token
 from kandinsky import get_video_pipeline, get_image_pipeline, get_distributed_pipeline
 
@@ -162,6 +165,12 @@ def parse_args():
         default=None,
         help="GPUs num for tensor parallel",
     )
+    parser.add_argument(
+        "--lora_repo_id",
+        type=str,
+        default="kandinskylab/Kandinsky-5.0-I2V-Pro-LoRa-Microwave-right",
+        help="lora repo id (on huggingface)",
+    )
     args = parser.parse_args()
 
     if args.hf_token:
@@ -201,7 +210,6 @@ if __name__ == "__main__":
                   "text_embedder": "cuda:0"}
     mode = get_generation_mode(args.config)
 
-
     if mode == "t2i" or mode == "i2i":
         pipe = get_image_pipeline(
             device_map=device_map,
@@ -223,7 +231,6 @@ if __name__ == "__main__":
             attention_engine=args.attention_engine,
             mode=mode,
         )
-        pipe = get_distributed_pipeline(pipe, args.tp_size, mode=mode)
 
     if args.output_filename is None:
         args.output_filename = "./" + args.prompt.replace(" ", "_")
@@ -234,8 +241,21 @@ if __name__ == "__main__":
         else:
             args.output_filename = args.output_filename + ".mp4"
 
-    start_time = time.perf_counter()
+    # load lora adapter
+    adapter_path = snapshot_download(
+        repo_id=args.lora_repo_id,
+        local_dir=os.path.join('./weights', args.lora_repo_id),
+        token=None
+    )
+    pipe.load_adapter(
+        adapter_config=os.path.join('./weights', args.lora_repo_id, "config_lora.json"),
+        adapter_path= os.path.join('./weights', args.lora_repo_id, "lora.safetensors"),
+    )
 
+    if mode == "i2v" or mode == "t2v":
+        pipe = get_distributed_pipeline(pipe, args.tp_size, mode=mode)
+
+    start_time = time.perf_counter()
     if "t2i" in args.config:
         x = pipe(args.prompt,
                  width=args.width,

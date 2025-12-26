@@ -149,7 +149,7 @@ def generate(
     timesteps = torch.linspace(1, 0, num_steps + 1, device=device)
     timesteps = scheduler_scale * timesteps / (1 + (scheduler_scale - 1) * timesteps)
 
-    if tp_mesh:
+    if tp_mesh and first_frames is None: # do not split on gpus for i2v
         tp_rank = tp_mesh["tensor_parallel"].get_local_rank()
         tp_world_size = tp_mesh["tensor_parallel"].size()
         img = torch.chunk(img, tp_world_size, dim=1)[tp_rank]
@@ -524,12 +524,7 @@ def generate_sample_i2v(
     if offload:
         dit.to(device, non_blocking=True)
 
-    if tp_mesh:
-        tp_rank = tp_mesh["tensor_parallel"].get_local_rank()
-        tp_world_size = tp_mesh["tensor_parallel"].size()
-        first_frames = torch.chunk(images, tp_world_size, dim=1)[tp_rank]
-    else:
-        first_frames = images
+    first_frames = images
 
     with torch.no_grad():
         with torch.autocast(device_type="cuda", dtype=torch.bfloat16):
@@ -553,16 +548,6 @@ def generate_sample_i2v(
                 attention_mask=attention_mask,
                 null_attention_mask=null_attention_mask,
             )
-    if tp_mesh:
-        tensor_list = [
-        torch.zeros_like(latent_visual, device=latent_visual.device) for _ in range(tp_mesh["tensor_parallel"].size())
-        ]
-        all_gather(
-            tensor_list,
-            latent_visual.contiguous(),
-            group=tp_mesh.get_group(mesh_dim="tensor_parallel")
-        )
-        latent_visual = torch.cat(tensor_list, dim=1)
 
     if images is not None:
         images = images.to(device=latent_visual.device, dtype=latent_visual.dtype)
