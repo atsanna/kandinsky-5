@@ -21,6 +21,7 @@ https://github.com/user-attachments/assets/b06f56de-1b05-4def-a611-1a3159ed71b0
 
 
 ## Project Updates
+- 🔥 ```2025/12/12```: Kandinsky 5.0 Video Pro is ranked as Top-1 open-source Text-to-Video model at [LMArena](https://lmarena.ai/leaderboard/text-to-video).
 - 🔥 ```2025/12/03```: our Kandinsky 5.0 Video Pro and Image Lite models are [accepted to diffusers](https://github.com/huggingface/diffusers/commit/d0c54e5563c3245b57d2b374e8e334da77305c05)
 - 🔥 ```2025/11/26```: our simplified LoRa training is available on [kandinsky-5-lora-train](https://github.com/kandinskylab/kandinsky-5-lora-train)
 - 🔥 ```2025/11/24```: LoRas for Camera control is open-sourced: [Lite LoRAs](https://huggingface.co/collections/kandinskylab/kandinsky-50-video-lite-loras) and [Pro LoRAs](https://huggingface.co/collections/kandinskylab/kandinsky-50-video-pro-loras). Inference code is avaibale in `examples/inference_examples_i2v_lora.ipynb` and `examples/inference_examples_t2v_lora.ipynb`
